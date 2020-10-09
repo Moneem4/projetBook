@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+<<<<<<< HEAD
 import {Model} from 'mongoose';
 var ObjectId = require('mongodb').ObjectID;
 import {InjectModel} from '@nestjs/mongoose';
@@ -62,5 +63,44 @@ export class BooksService {
         }
        
       }
+=======
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Book } from '../interfaces/book.interface';
+import { CreateBookDTO } from '../dto/book.dto';
+@Injectable()
+export class BooksService {
+  constructor(@InjectModel('Book') private book: Model<Book>) {}
 
+  getoneBook(id): Promise<Book> {
+    const book = this.book.findById(id).exec();
+    if (!book) {
+      throw new HttpException('book not found', HttpStatus.UNAUTHORIZED);
+    }
+    return book;
+  }
+
+  getBooks() {
+    return this.book.find();
+  }
+
+  createBook(@Res() res, book: CreateBookDTO) {
+    const createbook = new this.book(book);
+    createbook.save();
+    return res.status(HttpStatus.OK).json({
+      message: 'Post has been created successfully',
+      createbook,
+    });
+  }
+
+  async updateBook(id: string, book: CreateBookDTO): Promise<any> {
+    return await this.book.findByIdAndUpdate(id, book, {
+      useFindAndModify: false,
+    });
+  }
+>>>>>>> 1144210403e4f91ac2b7dfcbc64a283d36f68980
+
+  async deleteBook(id): Promise<any> {
+    return await this.book.findByIdAndRemove(id);
+  }
 }
