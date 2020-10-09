@@ -40,21 +40,6 @@ export class BooksController {
     });
   }
 
-<<<<<<< HEAD
-  @Put('update/:id')
-  updateBook(@Param() param, @Res() res, @Body() body) {
-  const bookupdated=  this.booksService.updateBook(param.id,body);
-  return res.status(HttpStatus.OK).json(bookupdated);
-  }
-
-  @Delete('delete/:id')
-  deleteBook(@Param() param, @Res() res) {
-  
-  const bookdeleted=  this.booksService.deleteBook(param.id);
-  return res.status(HttpStatus.OK).json(bookdeleted);
-  }
-  
-=======
   @Put('update')
   async updateBook(@Res() res, @Query('id') id: string, @Body() book: CreateBookDTO) {
     const bookupdated = await this.booksService.updateBook(id, book);
@@ -69,7 +54,6 @@ export class BooksController {
   async deleteBook(@Res() res, @Param('id') id) {
     // console.log('delete book', params.id);
     const book = await this.booksService.deleteBook(id);
->>>>>>> 1144210403e4f91ac2b7dfcbc64a283d36f68980
 
     if (!book) throw new NotFoundException('book does not exist');
     return res.status(HttpStatus.OK).json({
