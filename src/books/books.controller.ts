@@ -36,26 +36,17 @@ export class BooksController {
         })
   }
 
-  @Put('update')
-  updateBook(@Res() res,@Query('id') id:string,@Body() book:CreateBookDTO) {
-  const bookupdated=  this.booksService.updateBook(id,book);
-   if (!bookupdated) throw new NotFoundException('Id does not exist!');
-  return res.status(HttpStatus.OK).json({
-  message: 'book has been successfully updated',
-  bookupdated
-  }); 
+  @Put('update/:id')
+  updateBook(@Param() param, @Res() res, @Body() body) {
+  const bookupdated=  this.booksService.updateBook(param.id,body);
+  return res.status(HttpStatus.OK).json(bookupdated);
   }
 
   @Delete('delete/:id')
-  deleteBook(@Res() res,@Param('id') id) {
-   // console.log('delete book', params.id);
-  const book=  this.booksService.deleteBook(id);
+  deleteBook(@Param() param, @Res() res) {
   
-   if (!book) throw new NotFoundException('book does not exist');
-return res.status(HttpStatus.OK).json({
-message: 'book has been deleted',
-book
-})
+  const bookdeleted=  this.booksService.deleteBook(param.id);
+  return res.status(HttpStatus.OK).json(bookdeleted);
   }
   
 
